@@ -34,8 +34,8 @@ ADD docker /home/joyvan/work/docker
 RUN apt-get update && apt-get install -y openssh-client
 RUN mkdir -p /home/joyvan/.ssh
 #RUN ssh-keygen -N '' -t dsa -i /home/joyvan/.ssh/id_dsa
-ADD ssh/id_dsa.pub ssh/id_dsa     /home/jovyan/.ssh/
-RUN chown jovyan home/jovyan/.ssh/id_dsa.pub home/jovyan/.ssh/id_dsa
+## ADD ssh/id_dsa.pub ssh/id_dsa     /home/jovyan/.ssh/
+## RUN chown jovyan home/jovyan/.ssh/id_dsa.pub home/jovyan/.ssh/id_dsa
 
 # Install setup xdot: (for graphical display of GraphViz)
 RUN apt-get install -y xdot
