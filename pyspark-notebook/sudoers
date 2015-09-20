@@ -1,0 +1,6 @@
+
+#jovyan ALL=(ALL) NOPASSWD:ALL docker
+#jovyan ALL=(ALL) NOPASSWD:ALL ls
+jovyan ALL=(ALL) NOPASSWD:ALL 
+
+
