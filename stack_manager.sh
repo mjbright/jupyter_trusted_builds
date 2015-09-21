@@ -25,6 +25,7 @@ pull() {
         docker pull $image 2>/dev/null  | grep Status
         #df .
     done;
+    docker images | grep $IMAGE_MASK
 }
 
 run() {
