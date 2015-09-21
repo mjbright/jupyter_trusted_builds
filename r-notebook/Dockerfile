@@ -46,8 +46,9 @@ RUN mkdir -p /home/jovyan/.ssh
 #### RUN apt-get install -y xdot
 
 # Install hide_code extension:
+# - original not Python3 - git clone https://github.com/kirbs-/hide_code && \
 RUN cd /home/jovyan/src/git && \
-    git clone https://github.com/kirbs-/hide_code && \
+    git clone https://github.com/mjbright/hide_code && \
     cd /home/jovyan/src/git/hide_code && \
     python setup.py install
 
