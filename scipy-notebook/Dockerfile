@@ -62,7 +62,10 @@ RUN cd /home/jovyan/src/git && \
     git clone https://github.com/jupyter/nbgrader && \
     cd /home/jovyan/src/git/nbgrader && \
     python setup.py install
-RUN nbgrader extension install --symlink && \
+
+ENV PATH /home/jovyan/.local/bin/:$PATH
+
+RUN nbgrader extension install --user --symlink && \
     nbgrader extension activate
 
 USER root
