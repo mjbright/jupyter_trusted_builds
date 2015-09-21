@@ -37,8 +37,13 @@ RUN mkdir -p /home/joyvan/.ssh
 ## ADD ssh/id_dsa.pub ssh/id_dsa     /home/jovyan/.ssh/
 ## RUN chown jovyan home/jovyan/.ssh/id_dsa.pub home/jovyan/.ssh/id_dsa
 
-# Install setup xdot: (for graphical display of GraphViz)
-RUN apt-get install -y xdot
+#### # Install setup xdot: (for graphical display of GraphViz)
+#### RUN apt-get install -y xdot
 
+# Install hide_code extension:
+RUN cd /home/jovyan && \
+    git clone https://github.com/kirbs-/hide_code && \
+    cd src/git/hide_code && \
+    python setup.py install
 
 
