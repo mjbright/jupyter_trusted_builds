@@ -27,13 +27,13 @@ RUN groupadd -g 1000 docker && \
 # Setup sudoers without password:
 ADD sudoers /etc/sudoers
 
-ADD docker /home/joyvan/work/docker
+ADD docker /home/jovyan/work/docker
 #RUN ./docker-1.8.2 daemon 2>/dev/null ; ls -altr /var/run/docker.sock
 
 # Install setup ssh:
 RUN apt-get update && apt-get install -y openssh-client
-RUN mkdir -p /home/joyvan/.ssh
-#RUN ssh-keygen -N '' -t dsa -i /home/joyvan/.ssh/id_dsa
+RUN mkdir -p /home/jovyan/.ssh
+#RUN ssh-keygen -N '' -t dsa -i /home/jovyan/.ssh/id_dsa
 ## ADD ssh/id_dsa.pub ssh/id_dsa     /home/jovyan/.ssh/
 ## RUN chown jovyan home/jovyan/.ssh/id_dsa.pub home/jovyan/.ssh/id_dsa
 
