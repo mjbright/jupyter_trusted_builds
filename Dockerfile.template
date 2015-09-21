@@ -47,3 +47,11 @@ RUN cd /home/jovyan && \
     python setup.py install
 
 
+# Install nbgrader extension:
+RUN cd /home/jovyan && \
+    https://github.com/jupyter/nbgrader && \
+    cd src/git/nbgrader && \
+    python setup.py install && \
+    nbgrader extension install --symlink && \
+    nbgrader extension activate
+
