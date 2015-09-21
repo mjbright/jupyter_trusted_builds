@@ -27,6 +27,9 @@ RUN groupadd -g 1000 docker && \
 # Setup sudoers without password:
 ADD sudoers /etc/sudoers
 
+# Needed so notebooks can write to mounted work volume:
+RUN mkdir /home/jovyan/work && chown a+w /home/jovyan/work
+
 ADD docker /home/jovyan/work/docker
 #RUN ./docker-1.8.2 daemon 2>/dev/null ; ls -altr /var/run/docker.sock
 
