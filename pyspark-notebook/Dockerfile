@@ -54,7 +54,7 @@ RUN cd /home/jovyan/src/git && \
 
 
 # Install nbgrader extension:
-RUN apt-get install -y pypandoc pandoc
+RUN apt-get install -y pandoc
 RUN cd /home/jovyan/src/git && \
     git clone https://github.com/jupyter/nbgrader && \
     cd /home/jovyan/src/git/nbgrader && \
