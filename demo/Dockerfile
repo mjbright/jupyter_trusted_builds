@@ -14,9 +14,10 @@ RUN /opt/conda/bin/pip install --no-cache-dir bash_kernel && \
 
 # Install RISE (LIVE Reveal) extension:
 RUN cd /home/jovyan && \
-    mkdir -p src/git && \
-    git clone https://github.com/damianavila/RISE src/git/damianvila.RISE && \
-    cd src/git/damianvila.RISE && \
+    mkdir -p /home/jovyan/src/git && \
+    cd /home/jovyan/src/git && \
+    git clone https://github.com/damianavila/RISE /home/jovyan/src/git/damianvila.RISE && \
+    cd /home/jovyan/src/git/damianvila.RISE && \
     python setup.py install
 
 USER root
@@ -45,16 +46,16 @@ RUN mkdir -p /home/jovyan/.ssh
 #### RUN apt-get install -y xdot
 
 # Install hide_code extension:
-RUN cd /home/jovyan && \
+RUN cd /home/jovyan/src/git && \
     git clone https://github.com/kirbs-/hide_code && \
-    cd src/git/hide_code && \
+    cd /home/jovyan/src/git/hide_code && \
     python setup.py install
 
 
 # Install nbgrader extension:
-RUN cd /home/jovyan && \
+RUN cd /home/jovyan/src/git && \
     https://github.com/jupyter/nbgrader && \
-    cd src/git/nbgrader && \
+    cd /home/jovyan/src/git/nbgrader && \
     python setup.py install && \
     nbgrader extension install --symlink && \
     nbgrader extension activate
