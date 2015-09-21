@@ -31,12 +31,16 @@ run() {
     echo; echo "---- Launching images as daemons ...";
     docker images | grep $IMAGE_MASK
 
-    PORT=$BASE_PORT
+    let PORT=$BASE_PORT-1
 
-    echo "[$PWD] mkdir work"
-    mkdir work
+    [ ! -d work ] && {
+        echo "[$PWD] mkdir work";
+        mkdir work;
+    }
 
     for image in $(docker search $IMAGE_MASK | grep -v ^NAME | awk '{print $1;}'); do
+        let PORT=PORT+1
+
         [ ! -z "$IMAGE_TO_START" ] && {
             echo $image | grep $IMAGE_TO_START || {
                 echo "Skipping image <$image> (matching <<$IMAGE_TO_START>>)";
@@ -51,7 +55,6 @@ run() {
         docker run $OPTS -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}:/host.home -v ./work:/home/jovyan/work -it -p ${PORT}:8888 $image
 
         echo "${PORT}: $image" >&2
-        let PORT=PORT+1
     done 2> port_mappings.txt
 
     echo "Port mappings:"

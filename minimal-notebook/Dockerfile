@@ -27,18 +27,34 @@ RUN groupadd -g 1000 docker && \
 # Setup sudoers without password:
 ADD sudoers /etc/sudoers
 
-ADD docker /home/joyvan/work/docker
+# Needed so notebooks can write to mounted work volume:
+RUN mkdir /home/jovyan/work && chown jovyan /home/jovyan/work && chmod a+w /home/jovyan/work
+
+ADD docker /home/jovyan/work/docker
 #RUN ./docker-1.8.2 daemon 2>/dev/null ; ls -altr /var/run/docker.sock
 
 # Install setup ssh:
 RUN apt-get update && apt-get install -y openssh-client
-RUN mkdir -p /home/joyvan/.ssh
-#RUN ssh-keygen -N '' -t dsa -i /home/joyvan/.ssh/id_dsa
+RUN mkdir -p /home/jovyan/.ssh
+#RUN ssh-keygen -N '' -t dsa -i /home/jovyan/.ssh/id_dsa
 ## ADD ssh/id_dsa.pub ssh/id_dsa     /home/jovyan/.ssh/
 ## RUN chown jovyan home/jovyan/.ssh/id_dsa.pub home/jovyan/.ssh/id_dsa
 
-# Install setup xdot: (for graphical display of GraphViz)
-RUN apt-get install -y xdot
+#### # Install setup xdot: (for graphical display of GraphViz)
+#### RUN apt-get install -y xdot
+
+# Install hide_code extension:
+RUN cd /home/jovyan && \
+    git clone https://github.com/kirbs-/hide_code && \
+    cd src/git/hide_code && \
+    python setup.py install
 
 
+# Install nbgrader extension:
+RUN cd /home/jovyan && \
+    https://github.com/jupyter/nbgrader && \
+    cd src/git/nbgrader && \
+    python setup.py install && \
+    nbgrader extension install --symlink && \
+    nbgrader extension activate
 
