@@ -4,13 +4,30 @@ FROM jupyter/scipy-notebook
 
 MAINTAINER Michael Bright  <github.com@mjbright.net>
 
+#USER root
+
+RUN apt-get update
+ENV PATH $CONDA_DIR/bin:$PATH
+
+# Ruby dependencies
+RUN apt-get install -y --no-install-recommends ruby ruby-dev libtool autoconf automake gnuplot-nox libsqlite3-dev libatlas-base-dev libgsl0-dev && apt-get clean && ln -s /usr/bin/libtoolize /usr/bin/libtool
+RUN apt-get install -y --no-install-recommends libmagick++-dev imagemagick
+RUN gem install --no-rdoc --no-ri sciruby-full
+
 USER jovyan
+
+# Install IJulia and Julia packages:
+RUN julia -e 'Pkg.add("IJulia")'
+RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
+
+# IRuby
+RUN iruby register
 
 # Install bash_kernel:
 # Make sure not to create a cache dir else NB_UID switching
 # will hit issues.
-RUN /opt/conda/bin/pip install --no-cache-dir bash_kernel && \
-    /opt/conda/bin/python -m bash_kernel.install
+RUN pip install --no-cache-dir bash_kernel && \
+    python -m bash_kernel.install
 
 # Install RISE (LIVE Reveal) extension:
 RUN cd /home/jovyan && \
@@ -33,14 +50,10 @@ RUN [ ! -d /home/jovyan/work ] && mkdir /home/jovyan/work; RET=0
 RUN chown jovyan /home/jovyan/work && chmod a+w /home/jovyan/work
 
 ADD docker /home/jovyan/work/docker
-#RUN ./docker-1.8.2 daemon 2>/dev/null ; ls -altr /var/run/docker.sock
 
 # Install setup ssh:
-RUN apt-get update && apt-get install -y openssh-client
+RUN apt-get install -y openssh-client
 RUN mkdir -p /home/jovyan/.ssh
-#RUN ssh-keygen -N '' -t dsa -i /home/jovyan/.ssh/id_dsa
-## ADD ssh/id_dsa.pub ssh/id_dsa     /home/jovyan/.ssh/
-## RUN chown jovyan home/jovyan/.ssh/id_dsa.pub home/jovyan/.ssh/id_dsa
 
 #### # Install setup xdot: (for graphical display of GraphViz)
 #### RUN apt-get install -y xdot
@@ -67,6 +80,16 @@ ENV PATH /home/jovyan/.local/bin/:$PATH
 
 RUN nbgrader extension install --user --symlink && \
     nbgrader extension activate
+
+# Featured notebooks
+RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/jovyan/featured/pandas-cookbook/
+RUN git clone --depth 1 https://github.com/gibiansky/IHaskell.git /home/jovyan/IHaskell/ && \
+    mv /home/jovyan/IHaskell/ihaskell-display/ihaskell-widgets/Examples /home/jovyan/featured/ihaskell-widgets && \
+    rm -r /home/jovyan/IHaskell
+
+# Convert notebooks to the current format
+RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} \;
+RUN find . -name '*.ipynb' -exec ipython trust {} \;
 
 USER root
 
