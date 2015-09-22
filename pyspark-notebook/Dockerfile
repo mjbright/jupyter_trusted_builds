@@ -82,8 +82,8 @@ RUN nbgrader extension install --user --symlink && \
 RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/jovyan/featured/pandas-cookbook/
 
 # Convert notebooks to the current format
-RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} \;
-RUN find . -name '*.ipynb' -exec ipython trust {} \;
+RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} \; ; echo
+RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 
 USER root
 
