@@ -1,6 +1,7 @@
 #!/bin/bash
 
 IMAGE_MASK=mjbright/jup
+DOCKERHUB_USER_URL="https://hub.docker.com/r/mjbright"
 
 hostname=$(hostname)
 [ ! -d $hostname ] && mkdir $hostname
@@ -11,6 +12,7 @@ WORK=$hostname/work
 PULL=0
 RUN=0
 KILL=0
+STATUS=0;
 BASE_PORT0=891
 #BASE_PORT0=10891
 
@@ -50,6 +52,24 @@ pull() {
         #df .
     done;
     docker images | grep $IMAGE_MASK
+}
+
+build_status() {
+    for image in $(docker search $IMAGE_MASK | grep -v ^NAME | awk '{print $1;}'); do
+        image=${image#*/}
+        echo "lynx -dump $DOCKERHUB_USER_URL/$image/builds"
+        lynx -dump $DOCKERHUB_USER_URL/$image/builds |
+            perl -ne '
+                if (/404/) { $SEEN_404=1; next; }
+                if (/Page Not Found/) { die "No such image as <$image>"; }
+                if (/Build Code\s+Build Status/) { $INSTATUS=1; next; }
+                if ($INSTATUS) {
+                    m/^\s+\[\d+\](\w+)\s+(\w+)\s+(.+)/;
+                    print "$1, $2, $3\n";
+                    $INSTATUS=0;
+                };'
+
+    done
 }
 
 run() {
@@ -109,6 +129,7 @@ baseport
 # Args:
 while [ ! -z "$1" ];do
     case $1 in
+        -s)  STATUS=1;;
         -r)  RUN=1;
              [ "$2" != "" ] && { shift; IMAGE_TO_START=$1; };
              ;;
@@ -131,9 +152,9 @@ done
 ################################################################################
 # Main:
 
-[ $KILL -eq 1 ] && kill
-[ $PULL -eq 1 ] && pull
-[ $RUN  -eq 1 ] && run
-
+[ $KILL   -ne 0 ] && kill
+[ $PULL   -ne 0 ] && pull
+[ $RUN    -ne 0 ] && run
+[ $STATUS -ne 0 ] && build_status
 
 
