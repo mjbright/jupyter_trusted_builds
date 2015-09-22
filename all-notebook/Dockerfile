@@ -33,15 +33,6 @@ RUN mkdir -p /home/jovyan/.ssh
 #### # Install setup xdot: (for graphical display of GraphViz)
 #### RUN apt-get install -y xdot
 
-USER jovyan
-
-# Install hide_code extension:
-# - original not Python3 - git clone https://github.com/kirbs-/hide_code && \
-RUN cd /home/jovyan/src/git && \
-    git clone https://github.com/mjbright/hide_code && \
-    cd /home/jovyan/src/git/hide_code && \
-    python setup.py install
-
 # Install nbgrader extension:
 USER root
 RUN apt-get install -y pandoc
@@ -192,5 +183,15 @@ RUN cd /home/jovyan && \
     cd /home/jovyan/src/git/damianvila.RISE && \
     python setup.py install
 
+USER jovyan
+
+# Install hide_code extension:
+# - original not Python3 - git clone https://github.com/kirbs-/hide_code && \
+#RUN cd /home/jovyan/src/git && \
+    #git clone https://github.com/mjbright/hide_code && \
+    #cd /home/jovyan/src/git/hide_code && \
+    #python setup.py install
+
 USER root
+
 
