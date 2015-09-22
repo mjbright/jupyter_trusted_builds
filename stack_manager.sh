@@ -65,7 +65,7 @@ build_status() {
                 if (/Build Code\s+Build Status/) { $INSTATUS=1; next; }
                 if ($INSTATUS) {
                     m/^\s+\[\d+\](\w+)\s+(\w+)\s+(.+)/;
-                    print "$1, $2, $3\n";
+                    print "$ENV{image}; $1, $2, $3\n";
                     $INSTATUS=0;
                 };'
 
