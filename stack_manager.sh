@@ -72,6 +72,11 @@ build_status() {
     done
 }
 
+WATCH_BUILDS() {
+    DELAY=$1
+    watch -n $DELAY $0 -s
+}
+
 run() {
     echo; echo "---- Launching images as daemons ...";
     docker images | grep $IMAGE_MASK
@@ -137,6 +142,9 @@ while [ ! -z "$1" ];do
         -p)  PULL=1;;
         -np) PULL=0;;
         -k)  KILL=1;;
+
+        -W)  WATCH_BUILDS 2;;
+        -W*) WATCH_BUILDS ${1#-W};;
 
         -wj) WORK=$HOME/z/bin/jupyter;;
 
