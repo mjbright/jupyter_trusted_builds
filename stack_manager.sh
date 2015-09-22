@@ -5,7 +5,7 @@ DOCKERHUB_USER_URL="https://hub.docker.com/r/mjbright"
 
 hostname=$(hostname)
 [ ! -d $hostname ] && mkdir $hostname
-echo "\$hostname=$hostname"
+#echo "\$hostname=$hostname"
 
 WORK=$hostname/work
 
@@ -65,7 +65,19 @@ build_status() {
                 if (/Build Code\s+Build Status/) { $INSTATUS=1; next; }
                 if ($INSTATUS) {
                     m/^\s+\[\d+\](\w+)\s+(\w+)\s+(.+)/;
-                    print "$ENV{image}; $1, $2, $3\n";
+                    $build=$1;
+                    $state=$2;
+                    $cr_up=$3;
+                    $cr_up =~ s/minutes/mins/g;
+                    @sp = split(/\s+ago\s*/, $cr_up);
+                    $cr_up = "cr[" . $sp[0] . "] up[" . $sp[1] . "]";
+                    
+                    $image=$ENV{image};
+                    $spacer=" " x (28-length($image));
+                    #$image="$image" + (" " x (27-length($image)));
+                    $image="${spacer}${image}";
+                    #print "$image<$build> state[$state] cr-up[$cr_up]\n";
+                    print "$image<$build> state[$state] $cr_up\n";
                     $INSTATUS=0;
                 };'
 
