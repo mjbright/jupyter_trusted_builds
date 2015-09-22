@@ -6,7 +6,7 @@ MAINTAINER Michael Bright  <github.com@mjbright.net>
 
 #USER root
 
-RUN apt-get update
+RUN apt-get update -y
 ENV PATH $CONDA_DIR/bin:$PATH
 
 # Ruby dependencies
