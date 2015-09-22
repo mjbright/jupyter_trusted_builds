@@ -14,32 +14,6 @@ RUN apt-get install -y --no-install-recommends ruby ruby-dev libtool autoconf au
 RUN apt-get install -y --no-install-recommends libmagick++-dev imagemagick
 RUN gem install --no-rdoc --no-ri sciruby-full
 
-USER jovyan
-
-#[datascience-notebook]# Install IJulia and Julia packages:
-#[datascience-notebook]RUN julia -e 'Pkg.add("IJulia")'
-#[datascience-notebook]RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
-RUN pip install Julia
-
-# IRuby
-RUN iruby register
-
-# Install bash_kernel:
-# Make sure not to create a cache dir else NB_UID switching
-# will hit issues.
-RUN pip install --no-cache-dir bash_kernel && \
-    python -m bash_kernel.install
-
-# Install RISE (LIVE Reveal) extension:
-RUN cd /home/jovyan && \
-    mkdir -p /home/jovyan/src/git && \
-    cd /home/jovyan/src/git && \
-    git clone https://github.com/damianavila/RISE /home/jovyan/src/git/damianvila.RISE && \
-    cd /home/jovyan/src/git/damianvila.RISE && \
-    python setup.py install
-
-USER root
-
 RUN groupadd -g 1000 docker && \
     usermod -a -G docker jovyan
 
@@ -151,16 +125,27 @@ RUN conda install --yes \
     && conda clean -yt
 
 # Install Python 2 packages
-RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \
-    'ipython=4.0*' \
-    'ipywidgets=4.0*' \
-    'pandas=0.16*' \
-    'matplotlib=1.4*' \
-    'scipy=0.15*' \
-    'seaborn=0.6*' \
-    'scikit-learn=0.16*' \
-    pyzmq \
-    && conda clean -yt
+# RUN python2 --version
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'ipython=4.0*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'ipywidgets=4.0*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'pandas=0.16*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'matplotlib=1.4*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'scipy=0.15*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'seaborn=0.6*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ 'scikit-learn=0.16*' 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \ pyzmq  
+# RUN conda clean -yt
+# 
+# RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \
+    # 'ipython=4.0*' \
+    # 'ipywidgets=4.0*' \
+    # 'pandas=0.16*' \
+    # 'matplotlib=1.4*' \
+    # 'scipy=0.15*' \
+    # 'seaborn=0.6*' \
+    # 'scikit-learn=0.16*' \
+    # pyzmq \
+    # && conda clean -yt
 
 # R packages
 RUN conda config --add channels r
@@ -172,7 +157,7 @@ RUN conda install --yes \
 
 # Scala Spark kernel spec
 RUN mkdir -p /opt/conda/share/jupyter/kernels/scala
-COPY kernel.json /opt/conda/share/jupyter/kernels/scala/
+COPY all-spark_kernel.json /opt/conda/share/jupyter/kernels/scala/
 
 USER root
 
@@ -181,3 +166,31 @@ USER root
 RUN $CONDA_DIR/envs/python2/bin/python \
     $CONDA_DIR/envs/python2/bin/ipython \
     kernelspec install-self
+
+
+USER jovyan
+
+#[datascience-notebook]# Install IJulia and Julia packages:
+#[datascience-notebook]RUN julia -e 'Pkg.add("IJulia")'
+#[datascience-notebook]RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
+RUN pip install Julia
+
+# IRuby
+RUN iruby register
+
+# Install bash_kernel:
+# Make sure not to create a cache dir else NB_UID switching
+# will hit issues.
+RUN pip install --no-cache-dir bash_kernel && \
+    python -m bash_kernel.install
+
+# Install RISE (LIVE Reveal) extension:
+RUN cd /home/jovyan && \
+    mkdir -p /home/jovyan/src/git && \
+    cd /home/jovyan/src/git && \
+    git clone https://github.com/damianavila/RISE /home/jovyan/src/git/damianvila.RISE && \
+    cd /home/jovyan/src/git/damianvila.RISE && \
+    python setup.py install
+
+USER root
+
