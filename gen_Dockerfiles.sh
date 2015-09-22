@@ -56,8 +56,9 @@ BASE_IMAGES="
     jupyter/scipy-notebook
     jupyter/r-notebook
     jupyter/datascience-notebook
-    jupyter/docker-demo-images
 "
+    #jupyter/docker-demo-images
+    #jupyter/all-notebook
 ##? jupyter/notebook
 
 build_all() {
