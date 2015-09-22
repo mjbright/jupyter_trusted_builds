@@ -17,7 +17,21 @@ build_image() {
     IMAGE_NAME=$__RESULT
     DOCKERFILE=Dockerfile.${IMAGE_NAME}
 
-    BASE_IMAGE=$BASE_IMAGE perl -pe ' s/BASE_IMAGE/$ENV{BASE_IMAGE}/; ' Dockerfile.template > $DOCKERFILE
+    IMAGE_NAME=$IMAGE_NAME BASE_IMAGE=$BASE_IMAGE perl -pe '
+        # Set base-image to use:
+        s/^FROM BASE_IMAGE/FROM $ENV{BASE_IMAGE}/;
+
+        # Detect if line is intended for a particular notebook:
+        if (/^\[([\w,\-]+)\]/) {
+            my $MATCH_IMAGE_NAME=$1;
+            if ($ENV{IMAGE_NAME} =~ /$MATCH_IMAGE_NAME/) {
+                # OK include this line - without [match] clause
+                s/^\[[\w,\-]+\]\s*//;
+            } else {
+                $_=""; # Skip this line
+            }
+        }
+    ' Dockerfile.template > $DOCKERFILE
     ls -altr Dockerfile.template $DOCKERFILE
     #sed "s/BASE_IMAGE/$BASE_IMAGE/" Dockerfile.template > $DOCKERFILE
 

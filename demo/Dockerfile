@@ -16,9 +16,6 @@ RUN gem install --no-rdoc --no-ri sciruby-full
 
 USER jovyan
 
-# Install IJulia and Julia packages:
-RUN julia -e 'Pkg.add("IJulia")'
-RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
 
 # IRuby
 RUN iruby register
@@ -83,9 +80,6 @@ RUN nbgrader extension install --user --symlink && \
 
 # Featured notebooks
 RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/jovyan/featured/pandas-cookbook/
-RUN git clone --depth 1 https://github.com/gibiansky/IHaskell.git /home/jovyan/IHaskell/ && \
-    mv /home/jovyan/IHaskell/ihaskell-display/ihaskell-widgets/Examples /home/jovyan/featured/ihaskell-widgets && \
-    rm -r /home/jovyan/IHaskell
 
 # Convert notebooks to the current format
 RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} \;
