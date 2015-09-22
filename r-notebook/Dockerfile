@@ -16,6 +16,9 @@ RUN gem install --no-rdoc --no-ri sciruby-full
 
 USER jovyan
 
+#[datascience-notebook]# Install IJulia and Julia packages:
+#[datascience-notebook]RUN julia -e 'Pkg.add("IJulia")'
+#[datascience-notebook]RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
 
 # IRuby
 RUN iruby register

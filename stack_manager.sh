@@ -4,6 +4,7 @@ IMAGE_MASK=mjbright/jup
 
 hostname=$(hostname)
 [ ! -d $hostname ] && mkdir $hostname
+echo "\$hostname=$hostname"
 
 WORK=$hostname/work
 
@@ -27,7 +28,7 @@ die() {
 
 baseport() {
     case $hostname in
-        mike1)     let BASE_PORT=10000+$BASE_PORT0;;
+        mike1.hpintelco.org)     let BASE_PORT=10000+$BASE_PORT0;;
         pbell)     let BASE_PORT=14000+$BASE_PORT0;;
 
         MJBRIGHT7) die "No docker-stacks on $hostname";;
