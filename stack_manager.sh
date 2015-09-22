@@ -2,17 +2,40 @@
 
 IMAGE_MASK=mjbright/jup
 
+hostname=$(hostname)
+[ ! -d $hostname ] && mkdir $hostname
+
+WORK=$hostname/work
 
 PULL=0
 RUN=0
 KILL=0
-BASE_PORT=10891
+BASE_PORT0=891
+#BASE_PORT0=10891
+
+PORT_MAPPINGS=$hostname/port_mappings.txt
+
+ROOT=$HOME/z/bin/jupyter/jupyter_trusted_builds
+cd $ROOT
 
 ################################################################################
 # Functions:
 die() {
     echo "$0: die- $*" >&2
     exit 1
+}
+
+baseport() {
+    case $hostname in
+        mike1)     let BASE_PORT=10000+$BASE_PORT0;;
+        pbell)     let BASE_PORT=14000+$BASE_PORT0;;
+
+        MJBRIGHT7) die "No docker-stacks on $hostname";;
+        *)         die "No hostname";;
+    esac
+
+    #echo "[$hostname] $BASE_PORT"
+    #export BASE_PORT
 }
 
 pull() {
@@ -33,10 +56,13 @@ run() {
     docker images | grep $IMAGE_MASK
 
     let PORT=$BASE_PORT-1
+    echo "BASE_PORT=$BASE_PORT"
+    echo "PORT=$PORT"
+#exit 0
 
-    [ ! -d work ] && {
-        echo "[$PWD] mkdir work";
-        mkdir work;
+    [ ! -d $WORK ] && {
+        echo "[$PWD] mkdir -p $WORK";
+        mkdir -p $WORK;
     }
 
     for image in $(docker search $IMAGE_MASK | grep -v ^NAME | awk '{print $1;}'); do
@@ -52,14 +78,15 @@ run() {
         echo "docker run $image"
         OPTS="--rm"
         OPTS="-d"
-        #docker run $OPTS -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}:/host.home -v ${HOME}/work:/home/jovyan/work -it -p ${PORT}:8888 $image
-        docker run $OPTS -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}:/host.home -v ./work:/home/jovyan/work -it -p ${PORT}:8888 $image
+        CMD="docker run $OPTS -v /var/run/docker.sock:/var/run/docker.sock -v ${HOME}:/host.home -v $WORK:/home/jovyan/work -it -p ${PORT}:8888 $image"
+        $CMD
+        echo "[$PWD] $CMD" > $hostname/.run.${image#*/}
 
         echo "${PORT}: $image" >&2
-    done 2> port_mappings.txt
+    done 2> $PORT_MAPPINGS
 
     echo "Port mappings:"
-    cat port_mappings.txt
+    cat $PORT_MAPPINGS
 }
 
 kill() {
@@ -75,6 +102,8 @@ kill() {
 
 IMAGE_TO_START=""
 
+baseport
+
 ################################################################################
 # Args:
 while [ ! -z "$1" ];do
@@ -86,6 +115,11 @@ while [ ! -z "$1" ];do
         -p)  PULL=1;;
         -np) PULL=0;;
         -k)  KILL=1;;
+
+        -wj) WORK=$HOME/z/bin/jupyter;;
+
+        -w)  shift; WORK=$1;
+             [ ! -d $WORK ] && die "No such 'work' directory as <$WORK>";;
 
         *)   die "Unknown option '$1'";;
     esac
@@ -99,8 +133,6 @@ done
 [ $KILL -eq 1 ] && kill
 [ $PULL -eq 1 ] && pull
 [ $RUN  -eq 1 ] && run
-
-
 
 
 
