@@ -59,9 +59,9 @@ build_status() {
         image=${image#*/}
         echo "lynx -dump $DOCKERHUB_USER_URL/$image/builds"
         lynx -dump $DOCKERHUB_USER_URL/$image/builds |
-            perl -ne '
+            image=$image perl -ne '
                 if (/404/) { $SEEN_404=1; next; }
-                if (/Page Not Found/) { die "No such image as <$image>"; }
+                if (/Page Not Found/) { die "No such image as <$ENV{image}>"; }
                 if (/Build Code\s+Build Status/) { $INSTATUS=1; next; }
                 if ($INSTATUS) {
                     m/^\s+\[\d+\](\w+)\s+(\w+)\s+(.+)/;
