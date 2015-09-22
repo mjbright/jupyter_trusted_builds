@@ -57,7 +57,7 @@ pull() {
 build_status() {
     for image in $(docker search $IMAGE_MASK | grep -v ^NAME | awk '{print $1;}'); do
         image=${image#*/}
-        echo "lynx -dump $DOCKERHUB_USER_URL/$image/builds"
+        #echo "lynx -dump $DOCKERHUB_USER_URL/$image/builds"
         lynx -dump $DOCKERHUB_USER_URL/$image/builds |
             image=$image perl -ne '
                 if (/404/) { $SEEN_404=1; next; }
