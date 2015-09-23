@@ -47,8 +47,7 @@ USER jovyan
 #RUN pwd
 RUN cd /home/jovyan/src/git && \
     git clone https://github.com/jupyter/nbgrader && \
-
-RUN cd /home/jovyan/src/git/nbgrader && \
+    cd /home/jovyan/src/git/nbgrader && \
     python setup.py install
 
 ENV PATH /home/jovyan/.local/bin/:$PATH
