@@ -170,8 +170,9 @@ RUN $CONDA_DIR/envs/python2/bin/python \
 USER jovyan
 
 #[datascience-notebook]# Install IJulia and Julia packages:
-#[datascience-notebook]RUN julia -e 'Pkg.add("IJulia")'
-#[datascience-notebook]RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
+RUN julia -e 'Pkg.add("IJulia")'
+RUN julia -e 'Pkg.add("Interact")'
+RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
 RUN pip install Julia
 
 # IRuby
