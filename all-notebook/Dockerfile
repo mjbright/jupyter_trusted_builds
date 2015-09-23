@@ -34,14 +34,21 @@ RUN mkdir -p /home/jovyan/.ssh
 #### RUN apt-get install -y xdot
 
 RUN mkdir -p /home/jovyan/src/git
+RUN chown -R jovyan /home/jovyan/src/git && chmod -R o+rwx /home/jovyan/src/git
+RUN ls -altrd /home/jovyan/src/git
 
 # Install nbgrader extension:
 USER root
 RUN apt-get install -y pandoc
+
 USER jovyan
+#RUN cd /home/jovyan/src/git
+#RUN git clone https://github.com/jupyter/nbgrader 
+#RUN pwd
 RUN cd /home/jovyan/src/git && \
     git clone https://github.com/jupyter/nbgrader && \
-    cd /home/jovyan/src/git/nbgrader && \
+
+RUN cd /home/jovyan/src/git/nbgrader && \
     python setup.py install
 
 ENV PATH /home/jovyan/.local/bin/:$PATH
@@ -194,5 +201,8 @@ RUN cd /home/jovyan/src/git && \
     python setup.py install
 
 USER root
+
+ENV JUPYTER_CONFIG_DIR  jupyter --config-dir
+ADD custom.css $JUPYTER_CONFIG_DIR/
 
 
