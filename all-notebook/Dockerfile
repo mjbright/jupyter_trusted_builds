@@ -203,6 +203,8 @@ RUN cd /home/jovyan/src/git && \
 USER root
 
 ENV JUPYTER_CONFIG_DIR  jupyter --config-dir
-ADD custom.css $JUPYTER_CONFIG_DIR/
+
+# Removed:
+#ADD custom.css $JUPYTER_CONFIG_DIR/
 
 
