@@ -11,7 +11,8 @@ RUN apt-get update
 ENV PATH $CONDA_DIR/bin:$PATH
 
 # Ruby dependencies
-RUN apt-get install -y --no-install-recommends ruby ruby-dev libtool autoconf automake gnuplot-nox libsqlite3-dev libatlas-base-dev libgsl0-dev && apt-get clean && ln -s /usr/bin/libtoolize /usr/bin/libtool
+RUN apt-get install -y --no-install-recommends ruby ruby-dev libtool autoconf automake gnuplot-nox libsqlite3-dev libatlas-base-dev libgsl0-dev && apt-get clean
+# File already exists: && ln -s /usr/bin/libtoolize /usr/bin/libtool
 RUN apt-get install -y --no-install-recommends libmagick++-dev imagemagick
 RUN gem install --no-rdoc --no-ri sciruby-full
 
