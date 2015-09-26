@@ -1,6 +1,7 @@
 # Docker demo image, as used on try.jupyter.org and tmpnb.org
 
-FROM jupyter/docker-demo-images
+# github: jupyter/docker-demo-images
+FROM jupyter/demo
 
 MAINTAINER Michael Bright  <github.com@mjbright.net>
 
