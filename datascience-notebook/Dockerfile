@@ -6,7 +6,7 @@ MAINTAINER Michael Bright  <github.com@mjbright.net>
 
 #USER root
 
-RUN apt-get update
+RUN apt-get update -y
 ENV PATH $CONDA_DIR/bin:$PATH
 
 # Ruby dependencies
@@ -88,6 +88,9 @@ RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/jovyan
 # Convert notebooks to the current format
 RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} \; ; echo
 RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
+
+# Install Jessica Hamrick's PlotChecker module:
+RUN pip3 install plotchecker
 
 USER root
 
