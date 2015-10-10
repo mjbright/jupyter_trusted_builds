@@ -89,7 +89,7 @@ RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} 
 RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 
 # Install Jessica Hamrick's PlotChecker module:
-RUN pip3 install plotchecker
+RUN pip install plotchecker
 
 USER root
 
