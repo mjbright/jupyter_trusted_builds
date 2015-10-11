@@ -90,5 +90,9 @@ RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 # Install Jessica Hamrick's PlotChecker module:
 RUN pip install plotchecker
 
+# Install bqplot module:
+RUN pip install bqplot
+RUN python -m bqplot.install --symlink --user --force
+
 USER root
 
