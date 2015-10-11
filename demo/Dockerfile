@@ -91,6 +91,9 @@ RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 RUN pip install plotchecker
 
 # Install bqplot module:
+RUN sudo apt-get install -y libevent-dev python-dev build-essential
+#pip install uwsgi
+
 RUN pip install bqplot
 RUN python -m bqplot.install --symlink --user --force
 
