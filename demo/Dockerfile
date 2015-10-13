@@ -90,12 +90,13 @@ RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 # Install Jessica Hamrick's PlotChecker module:
 RUN pip install plotchecker
 
-# Install bqplot module:
-RUN sudo apt-get install -y libevent-dev python-dev build-essential
-#pip install uwsgi
+# Install bqplot module: FAILS with error:
+#
+#FIX?RUN sudo apt-get install -y libevent-dev python-dev build-essential
+#FIX?pip install uwsgi
 
-RUN pip install bqplot
-RUN python -m bqplot.install --symlink --user --force
+#RUN pip install bqplot
+#RUN python -m bqplot.install --symlink --user --force
 
 USER root
 
