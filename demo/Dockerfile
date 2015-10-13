@@ -106,3 +106,8 @@ RUN pip install mpld3
 
 USER root
 
+# Add OpenStack nova client:
+# sudo -n apt-get install -y python-novaclient
+RUN apt-get install -y python-novaclient python-cinderclient python-glanceclient python-neutronclient python-keystoneclient
+
+
