@@ -90,6 +90,12 @@ RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 # Install Jessica Hamrick's PlotChecker module:
 RUN pip install plotchecker
 
+# Install MPDL3 library:
+RUN pip install mpld3
+
+# D3plot?:
+#RUN https://github.com/jdfreder/ipython-d3plot
+
 # Install bqplot module: FAILS with error:
 #
 #FIX?RUN sudo apt-get install -y libevent-dev python-dev build-essential
