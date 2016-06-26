@@ -4,7 +4,7 @@ FROM jupyter/all-spark-notebook
 
 MAINTAINER Michael Bright  <github.com@mjbright.net>
 
-#USER root
+USER root
 
 RUN apt-get update -y
 ENV PATH $CONDA_DIR/bin:$PATH
@@ -104,4 +104,9 @@ RUN pip install mpld3
 #RUN python -m bqplot.install --symlink --user --force
 
 USER root
+
+# Add OpenStack nova client:
+# sudo -n apt-get install -y python-novaclient
+RUN apt-get install -y python-novaclient python-cinderclient python-glanceclient python-neutronclient python-keystoneclient
+
 
