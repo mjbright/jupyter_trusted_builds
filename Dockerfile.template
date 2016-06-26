@@ -61,28 +61,32 @@ RUN mkdir -p /home/jovyan/.ssh
 #### # Install setup xdot: (for graphical display of GraphViz)
 #### RUN apt-get install -y xdot
 
+RUN pip install nbgrader
+
 USER jovyan
 
 # Install hide_code extension:
 # - original not Python3 - git clone https://github.com/kirbs-/hide_code && \
-RUN cd /home/jovyan/src/git && \
-    git clone https://github.com/mjbright/hide_code && \
-    cd /home/jovyan/src/git/hide_code && \
-    python setup.py install
+# RUN cd /home/jovyan/src/git && \
+#     git clone https://github.com/mjbright/hide_code && \
+#     cd /home/jovyan/src/git/hide_code && \
+#     python setup.py install
 
 # Install nbgrader extension:
 USER root
 RUN apt-get install -y pandoc
 USER jovyan
-RUN cd /home/jovyan/src/git && \
-    git clone https://github.com/jupyter/nbgrader && \
-    cd /home/jovyan/src/git/nbgrader && \
-    python setup.py install
+
+
+#RUN cd /home/jovyan/src/git && \
+#    git clone https://github.com/jupyter/nbgrader && \
+#    cd /home/jovyan/src/git/nbgrader && \
+#    python setup.py install
 
 ENV PATH /home/jovyan/.local/bin/:$PATH
 
-RUN nbgrader extension install --user --symlink && \
-    nbgrader extension activate
+# RUN nbgrader extension install --user --symlink && \
+#     nbgrader extension activate
 
 # Featured notebooks
 RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/jovyan/featured/pandas-cookbook/
