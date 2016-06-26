@@ -4,7 +4,7 @@ FROM BASE_IMAGE
 
 MAINTAINER Michael Bright  <github.com@mjbright.net>
 
-#USER root
+USER root
 
 RUN apt-get update -y
 ENV PATH $CONDA_DIR/bin:$PATH
