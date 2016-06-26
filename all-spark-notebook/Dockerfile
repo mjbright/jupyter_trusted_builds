@@ -23,7 +23,7 @@ USER jovyan
 #[datascience-notebook]RUN julia -e 'Pkg.add("Gadfly")' && julia -e 'Pkg.add("RDatasets")'
 
 # IRuby
-RUN iruby register
+## RUN iruby register
 
 # Install bash_kernel:
 # Make sure not to create a cache dir else NB_UID switching

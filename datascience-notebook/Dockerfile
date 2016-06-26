@@ -24,7 +24,7 @@ USER jovyan
 RUN pip install Julia
 
 # IRuby
-RUN iruby register
+## RUN iruby register
 
 # Install bash_kernel:
 # Make sure not to create a cache dir else NB_UID switching
