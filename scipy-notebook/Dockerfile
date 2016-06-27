@@ -144,7 +144,7 @@ RUN cd ~/src/git/metakernel                 && python ./setup.py install
 RUN cd ~/src/git/metakernel/metakernel_bash && python ./setup.py install
 
 # Install GraphViz viewer
-RUN apt-get install -y kgraphviewer
+## RUN apt-get install -y kgraphviewer
 
 ## # ---- Install RISE extension:
 ## RUN mkdir -p ~/src/git && \
@@ -154,10 +154,10 @@ RUN apt-get install -y kgraphviewer
 ##     python setup.py install
 
 # ---- Install nbextensions (so can install table-of-contents extension):
-RUN cd ~/src/git && \
-    git clone https://github.com/ipython-contrib/Ipython-notebook-extensions.git && \
-    cd Ipython-notebook-extensions && \
-    python setup.py install
+## RUN cd ~/src/git && \
+##     git clone https://github.com/ipython-contrib/Ipython-notebook-extensions.git && \
+##     cd Ipython-notebook-extensions && \
+##     python setup.py install
 
 # ---- Show installed kernels and python/pip versions:
 RUN jupyter kernelspec list
@@ -168,10 +168,10 @@ RUN jupyter kernelspec list
 ##     ./get.docker.sh && \
 ##     usermod -aG docker main
 
-pip install xonsh
+RUN pip install xonsh
 
-pip install xonsh_kernel
-python -m xonsh_kernel.install
+RUN pip install xonsh_kernel
+RUN python -m xonsh_kernel.install
 
 
 
