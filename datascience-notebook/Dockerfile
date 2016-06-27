@@ -170,6 +170,7 @@ RUN jupyter kernelspec list
 ##     usermod -aG docker main
 
 pip install xonsh
+
 pip install xonsh_kernel
 python -m xonsh_kernel.install
 
