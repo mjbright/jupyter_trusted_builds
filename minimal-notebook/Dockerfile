@@ -94,6 +94,8 @@ RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/jovyan
 RUN find . -name '*.ipynb' -exec ipython nbconvert --to notebook {} --output {} \; ; echo
 RUN find . -name '*.ipynb' -exec ipython trust {} \; ; echo
 
+USER root
+
 # Install Jessica Hamrick's PlotChecker module:
 RUN pip install plotchecker
 
